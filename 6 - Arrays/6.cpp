@@ -1,0 +1,27 @@
+// Buy and Sell a Stock Once
+
+#include <algorithm>
+#include <iostream>
+#include <limits>
+#include <vector>
+
+using std::max;
+using std::min;
+using std::vector;
+
+double BuyandSellStockOnce(const vector<double> &prices) {
+  double min_price_so_far = std::numeric_limits<double>::max(); 
+  double max_profit = 0;
+  for (const double &price : prices) {
+    double max_profit_sell_today = price - min_price_so_far;
+    max_profit = max(max_profit, max_profit_sell_today);
+    min_price_so_far = min(min_price_so_far, price);
+  }
+  return max_profit;
+}
+
+int main() {
+    vector<double> Stocks 
+    = {310, 310, 350, 275, 260, 260, 230, 230};
+    std::cout << BuyandSellStockOnce(Stocks) << '\n';
+}

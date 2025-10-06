@@ -1,0 +1,24 @@
+// Advancing through an array
+
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+using std::cout;
+using std::max;
+using std::vector;
+
+bool CanReachEnd(const vector<int> &max_advance_steps) {
+  int furthest_reach_so_far = 0, last_index = max_advance_steps.size() - 1;
+  for (int i = 0;
+       i <= furthest_reach_so_far && furthest_reach_so_far < last_index; ++i) {
+    furthest_reach_so_far =
+        max(furthest_reach_so_far, max_advance_steps[i] + i);
+  }
+  return furthest_reach_so_far >= last_index;
+}
+
+int main() {
+  vector<int> adv{1, 1, 1, 2, 0, 1, 1};
+  cout << CanReachEnd(adv) << '\n';
+}
