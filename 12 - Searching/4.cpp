@@ -1,8 +1,5 @@
 // Compute the Integer Square Root
 
-#include <iostream>
-using std::cout;
-
 int SquareRoot(int k) {
   int left = 0, right = k;
   // Candidate interval [left, right] where everything before left has square <=
@@ -18,5 +15,3 @@ int SquareRoot(int k) {
   }
   return left - 1;
 }
-
-int main() { cout << SquareRoot(1000) << '\n'; }
