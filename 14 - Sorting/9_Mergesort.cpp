@@ -1,15 +1,11 @@
-// Merge Two Sorted Lists
+// Mergesort on Lists
 
-#include <iostream>
 #include <memory>
 
-using std::cout;
 using std::make_shared;
 using std::shared_ptr;
 
 template <typename T> struct ListNode {
-  ListNode(T data = T(), shared_ptr<ListNode<T>> next = nullptr)
-      : data(std::move(data)), next(std::move(next)) {}
   T data{};
   shared_ptr<ListNode<T>> next{nullptr};
 };
@@ -36,17 +32,20 @@ shared_ptr<ListNode<int>> MergeTwoSortedLists(shared_ptr<ListNode<int>> L1,
   return dummy_head->next;
 }
 
-// Time complexity O(n + m). Space complexity O(1).
-
-int main() {
-  auto n3 = make_shared<ListNode<int>>(40);
-  auto n2 = make_shared<ListNode<int>>(20, n3);
-  auto n1 = make_shared<ListNode<int>>(30);
-  auto n0 = make_shared<ListNode<int>>(0, n1);
-  auto n4 = MergeTwoSortedLists(n0, n2);
-
-  while (n4) {
-    cout << n4->data << '\n';
-    n4 = n4->next;
+shared_ptr<ListNode<int>> StableSortList(shared_ptr<ListNode<int>> L) {
+  // Base cases: L is empty or a single node, nothing to do.
+  if (L == nullptr || L->next == nullptr) {
+    return L;
   }
+
+  // Find the midpoint of L using a fast and a slow pointer.
+  shared_ptr<ListNode<int>> pre_slow = nullptr, slow = L, fast = L;
+  while (fast && fast->next) {
+    pre_slow = slow;
+    fast = fast->next->next, slow = slow->next;
+  }
+
+  pre_slow->next = nullptr; // Splits the list into two equal-sized lists.
+
+  return MergeTwoSortedLists(StableSortList(L), StableSortList(slow));
 }

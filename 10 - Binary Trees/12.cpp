@@ -15,22 +15,6 @@ template <typename T> struct BinaryTreeNode {
   unique_ptr<BinaryTreeNode<T>> left{nullptr}, right{nullptr};
 };
 
-unique_ptr<BinaryTreeNode<int>> BinaryTreeFromPreorderInorderHelper(
-    const vector<int> &preorder, size_t preorder_start, size_t prorder_end,
-    size_t inorder_start, size_t inorder_end,
-    const unordered_map<int, size_t> &node_to_inorder_idx);
-
-unique_ptr<BinaryTreeNode<int>>
-BinaryTreeFromPreorderInorder(const vector<int> &preorder,
-                              const vector<int> &inorder) {
-  unordered_map<int, size_t> node_to_inorder_idx;
-  for (size_t i = 0; i < inorder.size(); ++i) {
-    node_to_inorder_idx.emplace(inorder[i], i);
-  }
-  return BinaryTreeFromPreorderInorderHelper(
-      preorder, 0, preorder.size(), 0, inorder.size(), node_to_inorder_idx);
-}
-
 // Builds the subtree with preorder[preorder_start : preorder_end - 1] and
 // inorder[inorder_start : inorder_end - 1].
 unique_ptr<BinaryTreeNode<int>> BinaryTreeFromPreorderInorderHelper(
@@ -52,4 +36,15 @@ unique_ptr<BinaryTreeNode<int>> BinaryTreeFromPreorderInorderHelper(
       BinaryTreeFromPreorderInorderHelper(
           preorder, preorder_start + 1 + left_subtree_size, preorder_end,
           root_inorder_idx + 1, inorder_end, node_to_inorder_idx)});
+}
+
+unique_ptr<BinaryTreeNode<int>>
+BinaryTreeFromPreorderInorder(const vector<int> &preorder,
+                              const vector<int> &inorder) {
+  unordered_map<int, size_t> node_to_inorder_idx;
+  for (size_t i = 0; i < inorder.size(); ++i) {
+    node_to_inorder_idx.emplace(inorder[i], i);
+  }
+  return BinaryTreeFromPreorderInorderHelper(
+      preorder, 0, preorder.size(), 0, inorder.size(), node_to_inorder_idx);
 }
